@@ -5,97 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dr C Triguero, physics teacher</title>
 <style>
-:root{--bg:#f7f8fb;--ink:#14213d;--muted:#55627a;--line:#d5dcea;--accent:#2457c5;--dot:#e8590c}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1729;--ink:#e8edf7;--muted:#a3b0c7;--line:#2a3a5c;--accent:#8fb0ff;--dot:#ff9552}}
-:root[data-theme="dark"]{--bg:#0f1729;--ink:#e8edf7;--muted:#a3b0c7;--line:#2a3a5c;--accent:#8fb0ff;--dot:#ff9552}
+:root{--bg:#f6f8fc;--ink:#0e1a33;--muted:#53617c;--line:#d3dbea;--accent:#2457c5;--dot:#e8590c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1426;--ink:#e9eef9;--muted:#a1aec7;--line:#26365a;--accent:#8fb0ff;--dot:#ff9552}}
+:root[data-theme="dark"]{--bg:#0b1426;--ink:#e9eef9;--muted:#a1aec7;--line:#26365a;--accent:#8fb0ff;--dot:#ff9552}
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:680px;margin:0 auto;padding:56px 20px 40px}
-h1{font:700 clamp(2.2rem,7vw,3.2rem)/1.05 Georgia,"Times New Roman",serif;margin:0}
-.role{margin:10px 0 0;color:var(--muted);font-size:1.05rem}
-figure{margin:40px 0 8px}
-svg{display:block;width:100%;height:auto;max-width:100%}
-.base{stroke:var(--line);stroke-width:2}
-.dot{fill:var(--dot)}
-figcaption{margin-top:8px;color:var(--muted);font-size:.9rem}
-h2{font:700 1.35rem Georgia,"Times New Roman",serif;margin:44px 0 8px}
-p{margin:0 0 14px;max-width:62ch}
-ul{margin:0;padding-left:1.1em;max-width:62ch}
-li{margin-bottom:6px}
-.pubs{padding-left:0;list-style:none;max-width:62ch}
-.pubs li{margin-bottom:16px;line-height:1.5}
-.pubs .me{font-weight:700}
-.profiles{margin-top:8px}
+body{margin:0;position:relative;overflow-x:hidden;background:var(--bg);color:var(--ink);font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* natural-pattern background: sunflower (golden-angle) spirals */
+.bg{position:absolute;left:0;right:0;pointer-events:none;overflow:hidden;z-index:-1}
+.bg.top{top:0;height:820px}
+.bg.bottom{bottom:0;height:640px}
+.bg svg{position:absolute;width:min(760px,130vw);height:auto;opacity:.3;-webkit-mask-image:radial-gradient(closest-side,#000 50%,transparent 100%);mask-image:radial-gradient(closest-side,#000 50%,transparent 100%);animation:bgfade 1.8s ease-out both}
+.bg.top svg{right:-200px;top:-140px}
+.bg.bottom svg{left:-240px;bottom:-200px;opacity:.22}
+.bg .a{fill:var(--accent)}
+.bg .o{fill:var(--dot)}
+@keyframes bgfade{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){.bg svg{animation:none}}
+.serif{font-family:Georgia,"Times New Roman",serif}
 a{color:var(--accent);text-underline-offset:3px}
-a:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
-footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+/* hero */
+.hero{padding:72px 0 20px}
+h1{font:700 clamp(2.9rem,10vw,5.8rem)/.95 Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+.role{margin:18px 0 0;font-size:1.2rem;color:var(--muted);max-width:40ch}
+nav{display:flex;flex-wrap:wrap;gap:6px 24px;margin-top:26px;font-size:.98rem}
+figure{margin:48px 0 0}
+svg{display:block;width:100%;height:auto}
+.base{stroke:var(--line);stroke-width:2}
+.tick{fill:var(--muted);font:13px system-ui,sans-serif;text-anchor:middle}
+.dot{fill:var(--dot);transform-box:fill-box;transform-origin:center;animation:pop .4s ease-out both;animation-delay:calc(var(--i) * .22s)}
 @keyframes pop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
-.dot{transform-box:fill-box;transform-origin:center;animation:pop .35s ease-out both;animation-delay:calc(var(--i) * .2s)}
-@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+figcaption{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between;margin-top:6px;color:var(--muted);font-size:.92rem}
+button{font:inherit;font-size:.88rem;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;padding:4px 12px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+
+/* sections */
+section{margin-top:64px;padding-top:28px;border-top:1px solid var(--line)}
+h2{font:700 1.7rem/1.2 Georgia,"Times New Roman",serif;margin:0 0 20px}
+p{margin:0 0 14px}
+.lead{font-size:1.18rem;max-width:60ch}
+
+.topics{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px 44px}
+.topics h3{font:700 1.1rem Georgia,"Times New Roman",serif;margin:0 0 4px}
+.topics p{margin:0;color:var(--muted);font-size:.97rem;line-height:1.5}
+
+.pubs{list-style:none;margin:0;padding:0}
+.pubs li{display:grid;grid-template-columns:4.6rem 1fr;gap:4px 16px;padding:16px 0;border-top:1px dashed var(--line)}
+.pubs li:first-child{border-top:0;padding-top:0}
+.year{font:700 1.5rem/1.2 Georgia,serif;color:var(--accent)}
+.ptitle{font-weight:600;display:block}
+.pmeta{color:var(--muted);font-size:.95rem;display:block;margin-top:2px}
+.me{font-weight:700}
+.profiles{margin-top:18px;color:var(--muted)}
+
+.mail{font:700 clamp(1.15rem,4vw,1.6rem) Georgia,serif;word-break:break-word}
+footer{margin:72px 0 40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+
+@media (max-width:520px){.pubs li{grid-template-columns:1fr}.year{font-size:1.2rem}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<main>
-  <header>
+<div class="bg top" aria-hidden="true"><svg id="p1" viewBox="-300 -300 600 600"></svg></div>
+<div class="bg bottom" aria-hidden="true"><svg id="p2" viewBox="-300 -300 600 600"></svg></div>
+<div class="wrap">
+
+  <header class="hero">
     <h1>Dr C Triguero</h1>
-    <p class="role">Physics teacher, GCSE and A level, Northern Ireland</p>
+    <p class="role">Physicist and teacher of GCSE and A level physics, Northern Ireland.</p>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <figure>
+      <svg viewBox="0 0 920 90" role="img" aria-label="A motion diagram: eight dots at equal time intervals, with the gaps between them growing from left to right, showing constant acceleration">
+        <line class="base" x1="10" y1="34" x2="910" y2="34"/>
+        <g id="dots">
+          <circle class="dot" style="--i:0" cx="30"    cy="34" r="7"/>
+          <circle class="dot" style="--i:1" cx="47.6"  cy="34" r="7"/>
+          <circle class="dot" style="--i:2" cx="100.4" cy="34" r="7"/>
+          <circle class="dot" style="--i:3" cx="188.4" cy="34" r="7"/>
+          <circle class="dot" style="--i:4" cx="311.6" cy="34" r="7"/>
+          <circle class="dot" style="--i:5" cx="470"   cy="34" r="7"/>
+          <circle class="dot" style="--i:6" cx="663.6" cy="34" r="7"/>
+          <circle class="dot" style="--i:7" cx="892.4" cy="34" r="7"/>
+        </g>
+        <text class="tick" x="30" y="72">0</text>
+        <text class="tick" x="47.6" y="72">1</text>
+        <text class="tick" x="100.4" y="72">2</text>
+        <text class="tick" x="188.4" y="72">3</text>
+        <text class="tick" x="311.6" y="72">4</text>
+        <text class="tick" x="470" y="72">5</text>
+        <text class="tick" x="663.6" y="72">6</text>
+        <text class="tick" x="892.4" y="72">7 s</text>
+      </svg>
+      <figcaption>
+        <span>Equal time steps, growing gaps: this is what acceleration looks like.</span>
+        <button type="button" id="replay">Replay</button>
+      </figcaption>
+    </figure>
   </header>
 
-  <figure>
-    <svg viewBox="0 0 580 50" role="img" aria-label="A motion diagram: eight dots at equal time intervals, with the gaps between them growing larger from left to right">
-      <line class="base" x1="10" y1="25" x2="570" y2="25"/>
-      <circle class="dot" style="--i:0" cx="20"  cy="25" r="5"/>
-      <circle class="dot" style="--i:1" cx="31"  cy="25" r="5"/>
-      <circle class="dot" style="--i:2" cx="64"  cy="25" r="5"/>
-      <circle class="dot" style="--i:3" cx="119" cy="25" r="5"/>
-      <circle class="dot" style="--i:4" cx="196" cy="25" r="5"/>
-      <circle class="dot" style="--i:5" cx="295" cy="25" r="5"/>
-      <circle class="dot" style="--i:6" cx="416" cy="25" r="5"/>
-      <circle class="dot" style="--i:7" cx="559" cy="25" r="5"/>
-    </svg>
-    <figcaption>Equal time steps, growing gaps: this is what acceleration looks like.</figcaption>
-  </figure>
+  <main>
+    <section id="about">
+      <h2>About</h2>
+      <p class="lead">I am a physicist and teacher. My research background is in computational and statistical physics, with papers on phase transitions, porous materials, magnetism and molecular simulation. Today I teach physics from GCSE to A level, and I enjoy showing students that an equation, a graph and an experiment can tell the same story.</p>
+    </section>
 
-  <section>
-    <h2>About me</h2>
-    <p>I am a physicist and teacher. My research background is in computational and statistical physics, with papers on phase transitions, porous materials, magnetism and molecular simulation. Today I teach physics from GCSE to A level, and I enjoy showing students that an equation, a graph and an experiment can tell the same story.</p>
-  </section>
+    <section id="teaching">
+      <h2>What I teach</h2>
+      <div class="topics">
+        <div><h3>Mechanics</h3><p>Forces, Newton’s laws, motion, graphs and energy.</p></div>
+        <div><h3>Waves and optics</h3><p>Waves, light, lenses and interference.</p></div>
+        <div><h3>Electricity and magnetism</h3><p>Circuits, fields and electromagnetic induction.</p></div>
+        <div><h3>Thermal physics and materials</h3><p>Heat, gases and the properties of matter.</p></div>
+        <div><h3>Aerospace principles</h3><p>Flight, lift and drag, rockets and orbits.</p></div>
+        <div><h3>Relativity</h3><p>Time dilation, length contraction and mass–energy equivalence.</p></div>
+        <div><h3>Quantum mechanics</h3><p>Photons, wave–particle duality and atomic energy levels.</p></div>
+        <div><h3>Practical work</h3><p>Planning, measuring and evaluating experiments.</p></div>
+      </div>
+    </section>
 
-  <section>
-    <h2>What I teach</h2>
-    <ul>
-      <li>Mechanics: forces, Newton’s laws, motion, graphs and energy</li>
-      <li>Waves, light and optics</li>
-      <li>Electricity and magnetism</li>
-      <li>Thermal physics and the properties of materials</li>
-      <li>Aerospace principles: flight, lift and drag, rockets and orbits</li>
-      <li>Relativity: time dilation, length contraction and mass–energy equivalence</li>
-      <li>Quantum mechanics: photons, wave–particle duality and atomic energy levels</li>
-      <li>Practical work: planning, measuring and evaluating experiments</li>
-    </ul>
-  </section>
+    <section id="publications">
+      <h2>Publications</h2>
+      <ol class="pubs">
+        <li>
+          <span class="year">2018</span>
+          <span>
+            <a class="ptitle" href="https://doi.org/10.1021/acs.jpcb.8b03661">Using intrinsic surfaces to calculate the free-energy change when nanoparticles adsorb on membranes</a>
+            <span class="pmeta">J. Klug, <a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, M. G. Del Pópolo, G. A. Tribello. <i>Journal of Physical Chemistry B</i> 122(24), 6417–6422.</span>
+          </span>
+        </li>
+        <li>
+          <span class="year">2016</span>
+          <span>
+            <a class="ptitle" href="https://doi.org/10.1103/PhysRevB.94.144102">Origin of scale-free intermittency in structural first-order phase transitions</a>
+            <span class="pmeta">F. J. Perez-Reche, <a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, G. Zanzotto, L. Truskinovsky. <i>Physical Review B</i> 94, 144102.</span>
+          </span>
+        </li>
+        <li>
+          <span class="year">2012</span>
+          <span>
+            <a class="ptitle" href="https://doi.org/10.1063/1.4765369">Understanding adsorption-induced structural transitions in metal-organic frameworks: from the unit cell to the crystal</a>
+            <span class="pmeta"><a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, F.-X. Coudert, A. Boutin, A. H. Fuchs, A. V. Neimark. <i>Journal of Chemical Physics</i> 137(18), 184702.</span>
+          </span>
+        </li>
+        <li>
+          <span class="year">2011</span>
+          <span>
+            <a class="ptitle" href="https://doi.org/10.1021/jz2008769">Mechanism of breathing transitions in metal–organic frameworks</a>
+            <span class="pmeta"><a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, F.-X. Coudert, A. Boutin, A. H. Fuchs, A. V. Neimark. <i>Journal of Physical Chemistry Letters</i> 2, 2033–2037.</span>
+          </span>
+        </li>
+        <li>
+          <span class="year">2011</span>
+          <span>
+            <a class="ptitle" href="https://doi.org/10.1021/la200094x">Structural transitions in MIL-53 (Cr): view from outside and inside</a>
+            <span class="pmeta">A. V. Neimark, F.-X. Coudert, <a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, A. Boutin, A. H. Fuchs, I. Beurroies, R. Denoyel. <i>Langmuir</i> 27, 4734–4741.</span>
+          </span>
+        </li>
+        <li>
+          <span class="year">2006</span>
+          <span>
+            <a class="ptitle" href="https://doi.org/10.1103/PhysRevB.73.054401">Coupling between lattice vibrations and magnetism in Ising-like systems</a>
+            <span class="pmeta"><a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, M. Porta, A. Planes. <i>Physical Review B</i> 73, 054401.</span>
+          </span>
+        </li>
+      </ol>
+      <p class="profiles">Author profiles: <a href="https://orcid.org/0000-0002-2923-6821">ORCID</a> and <a href="https://scholar.google.com/scholar?q=author%3A%22Carles+Triguero%22">Google Scholar</a>.</p>
+    </section>
 
-  <section id="publications">
-    <h2>Publications</h2>
-    <ul class="pubs">
-      <li>J. Klug, <a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, M. G. Del Pópolo, G. A. Tribello (2018). Using intrinsic surfaces to calculate the free-energy change when nanoparticles adsorb on membranes. <i>Journal of Physical Chemistry B</i> 122(24), 6417–6422. <a href="https://doi.org/10.1021/acs.jpcb.8b03661">doi:10.1021/acs.jpcb.8b03661</a></li>
-      <li>F. J. Perez-Reche, <a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, G. Zanzotto, L. Truskinovsky (2016). Origin of scale-free intermittency in structural first-order phase transitions. <i>Physical Review B</i> 94, 144102. <a href="https://doi.org/10.1103/PhysRevB.94.144102">doi:10.1103/PhysRevB.94.144102</a></li>
-      <li><a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, F.-X. Coudert, A. Boutin, A. H. Fuchs, A. V. Neimark (2012). Understanding adsorption-induced structural transitions in metal-organic frameworks: from the unit cell to the crystal. <i>Journal of Chemical Physics</i> 137(18), 184702. <a href="https://doi.org/10.1063/1.4765369">doi:10.1063/1.4765369</a></li>
-      <li><a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, F.-X. Coudert, A. Boutin, A. H. Fuchs, A. V. Neimark (2011). Mechanism of breathing transitions in metal–organic frameworks. <i>Journal of Physical Chemistry Letters</i> 2, 2033–2037. <a href="https://doi.org/10.1021/jz2008769">doi:10.1021/jz2008769</a></li>
-      <li>A. V. Neimark, F.-X. Coudert, <a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, A. Boutin, A. H. Fuchs, I. Beurroies, R. Denoyel (2011). Structural transitions in MIL-53 (Cr): view from outside and inside. <i>Langmuir</i> 27, 4734–4741. <a href="https://doi.org/10.1021/la200094x">doi:10.1021/la200094x</a></li>
-      <li><a class="me" href="https://orcid.org/0000-0002-2923-6821">Carles Triguero</a>, M. Porta, A. Planes (2006). Coupling between lattice vibrations and magnetism in Ising-like systems. <i>Physical Review B</i> 73, 054401. <a href="https://doi.org/10.1103/PhysRevB.73.054401">doi:10.1103/PhysRevB.73.054401</a></li>
-    </ul>
-    <p class="profiles">Author profiles: <a href="https://orcid.org/0000-0002-2923-6821">ORCID</a> and <a href="https://scholar.google.com/scholar?q=author%3A%22Carles+Triguero%22">Google Scholar</a>.</p>
-  </section>
-
-  <section>
-    <h2>Get in touch</h2>
-    <p>The best way to reach me is by email: <a href="mailto:ctriguero315@c2ken.net">ctriguero315@c2ken.net</a></p>
-  </section>
+    <section id="contact">
+      <h2>Get in touch</h2>
+      <p>The best way to reach me is by email.</p>
+      <p><a class="mail" href="mailto:ctriguero315@c2ken.net">ctriguero315@c2ken.net</a></p>
+    </section>
+  </main>
 
   <footer>© 2026 Dr C Triguero</footer>
-</main>
+</div>
+
+<script>
+/* sunflower pattern: each seed is turned by the golden angle (137.5 degrees) */
+(function(){
+  function phyllo(id,N,s){
+    var el=document.getElementById(id),h="";
+    for(var n=1;n<=N;n++){
+      var a=n*2.399963,r=s*Math.sqrt(n);
+      var x=(r*Math.cos(a)).toFixed(1),y=(r*Math.sin(a)).toFixed(1);
+      var z=(0.9+3*r/(s*Math.sqrt(N))).toFixed(1);
+      h+='<circle class="'+(n%13===0?'o':'a')+'" cx="'+x+'" cy="'+y+'" r="'+z+'"/>';
+    }
+    el.innerHTML=h;
+  }
+  phyllo("p1",720,10.5);
+  phyllo("p2",520,10.5);
+})();
+document.getElementById("replay").addEventListener("click",function(){
+  document.querySelectorAll(".dot").forEach(function(d){
+    d.style.animation="none"; d.getBoundingClientRect(); d.style.animation="";
+  });
+});
+</script>
 </body>
 </html>
