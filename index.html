@@ -21,8 +21,10 @@ body{margin:0;position:relative;overflow-x:hidden;background:var(--bg);color:var
 .bg svg{position:absolute;width:min(760px,130vw);height:auto;opacity:.3;-webkit-mask-image:radial-gradient(closest-side,#000 50%,transparent 100%);mask-image:radial-gradient(closest-side,#000 50%,transparent 100%);animation:bgfade 1.8s ease-out both}
 .bg.top svg{right:-200px;top:-140px}
 .bg.bottom svg{left:-240px;bottom:-200px;opacity:.22}
-.bg .a{fill:var(--accent)}
-.bg .o{fill:var(--dot)}
+.bg svg{fill:none;stroke:var(--accent);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.bg .f{fill:var(--accent);stroke:none}
+.bg .o{stroke:var(--dot)}
+.bg .fo{fill:var(--dot);stroke:none}
 @keyframes bgfade{from{opacity:0}}
 @media (prefers-reduced-motion:reduce){.bg svg{animation:none}}
 .serif{font-family:Georgia,"Times New Roman",serif}
@@ -64,7 +66,7 @@ p{margin:0 0 14px}
 .profiles{margin-top:18px;color:var(--muted)}
 
 .mail{font:700 clamp(1.15rem,4vw,1.6rem) Georgia,serif;word-break:break-word}
-footer{margin:72px 0 40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+footer{margin:72px 0 40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;align-items:center}
 
 @media (max-width:520px){.pubs li{grid-template-columns:1fr}.year{font-size:1.2rem}}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
@@ -77,7 +79,7 @@ footer{margin:72px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 
   <header class="hero">
     <h1>Dr C Triguero</h1>
-    <p class="role">If the Universe is the answer, what was the question?</p>
+    <p class="role">Physicist and teacher of GCSE and A level physics, Northern Ireland.</p>
     <nav aria-label="Sections">
       <a href="#about">About</a>
       <a href="#teaching">Teaching</a>
@@ -117,7 +119,7 @@ footer{margin:72px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
   <main>
     <section id="about">
       <h2>About</h2>
-      <p class="lead">I am a physicist and teacher. My research background is in computational and statistical physics, with papers on phase transitions, porous materials, magnetism and molecular simulation. I teach Physics, and I love making the wonders of nature easy to understand.</p>
+      <p class="lead">I am a physicist and teacher. My research background is in computational and statistical physics, with papers on phase transitions, porous materials, magnetism and molecular simulation. Today I teach physics from GCSE to A level, and I enjoy showing students that an equation, a graph and an experiment can tell the same story.</p>
     </section>
 
     <section id="teaching">
@@ -190,24 +192,108 @@ footer{margin:72px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
     </section>
   </main>
 
-  <footer>© 2026 Dr C Triguero</footer>
+  <footer><span>© 2026 Dr C Triguero</span><span>Background: <span id="bgname"></span> <button type="button" id="newbg">Change</button></span></footer>
 </div>
 
 <script>
-/* sunflower pattern: each seed is turned by the golden angle (137.5 degrees) */
+/* Random natural-pattern background: a different pair of patterns every time the page opens */
 (function(){
-  function phyllo(id,N,s){
-    var el=document.getElementById(id),h="";
-    for(var n=1;n<=N;n++){
-      var a=n*2.399963,r=s*Math.sqrt(n);
-      var x=(r*Math.cos(a)).toFixed(1),y=(r*Math.sin(a)).toFixed(1);
-      var z=(0.9+3*r/(s*Math.sqrt(N))).toFixed(1);
-      h+='<circle class="'+(n%13===0?'o':'a')+'" cx="'+x+'" cy="'+y+'" r="'+z+'"/>';
-    }
-    el.innerHTML=h;
+  var R=Math.random,PI=Math.PI,S3=Math.sqrt(3),PHI=(1+Math.sqrt(5))/2;
+  function rn(a,b){return a+R()*(b-a)}
+  function q(v){return Math.round(v*10)/10}
+  function pick(n){return Math.floor(R()*n)}
+  function circ(x,y,r,c){return '<circle'+(c?' class="'+c+'"':'')+' cx="'+q(x)+'" cy="'+q(y)+'" r="'+q(r)+'"/>'}
+
+  var P=[
+  {name:"sunflower spirals",rot:1,gen:function(){
+    var h="",N=720,s=10.5,o=R()*6.28;
+    for(var n=1;n<=N;n++){var a=n*2.399963+o,r=s*Math.sqrt(n);h+=circ(r*Math.cos(a),r*Math.sin(a),.9+3*r/(s*Math.sqrt(N)),n%13?"f":"fo")}
+    return h}},
+  {name:"wave ripples",rot:0,gen:function(){
+    var h="",k=2+pick(2),st=rn(15,21);
+    for(var i=0;i<k;i++){var cx=rn(-170,170),cy=rn(-170,170);for(var r=8;r<520;r+=st)h+=circ(cx,cy,r,i?"":"o")}
+    return h}},
+  {name:"honeycomb",rot:1,gen:function(){
+    var s=rn(20,28),w=S3*s,d="",hl="";
+    for(var j=-18;j<=18;j++)for(var i=-14;i<=14;i++){
+      var x=(i+(j&1?.5:0))*w,y=j*1.5*s;if(x*x+y*y>340*340)continue;
+      var p="";for(var k=0;k<6;k++){var a=PI/6+k*PI/3;p+=(k?"L":"M")+q(x+s*Math.cos(a))+" "+q(y+s*Math.sin(a))}
+      p+="Z";if(R()<.07)hl+=p;else d+=p}
+    return '<path d="'+d+'"/><path class="fo" fill-opacity=".5" d="'+hl+'"/>'}},
+  {name:"crystal grains",rot:1,gen:function(){
+    var K=11+pick(6),sd=[],g,x,y;
+    for(g=0;g<K;g++)sd.push([rn(-300,300),rn(-300,300),R()*PI/2]);
+    function near(x,y){var b=0,bd=1e9;for(var g=0;g<K;g++){var dx=x-sd[g][0],dy=y-sd[g][1],d=dx*dx+dy*dy;if(d<bd){bd=d;b=g}}return b}
+    var n=120,c=5,ids=[],d="";
+    for(y=0;y<n;y++){ids.push([]);for(x=0;x<n;x++)ids[y].push(near(-300+x*c+c/2,-300+y*c+c/2))}
+    for(y=0;y<n-1;y++)for(x=0;x<n-1;x++){var X=-300+x*c,Y=-300+y*c;
+      if(ids[y][x]!=ids[y][x+1])d+="M"+(X+c)+" "+Y+"v"+c;
+      if(ids[y][x]!=ids[y+1][x])d+="M"+X+" "+(Y+c)+"h"+c}
+    var h='<path stroke-width="2" d="'+d+'"/>',sp=13;
+    for(g=0;g<K;g++){var t=sd[g][2],ct=Math.cos(t),st=Math.sin(t);
+      for(var u=-30;u<=30;u++)for(var v=-30;v<=30;v++){
+        var px=sd[g][0]+(u*ct-v*st)*sp,py=sd[g][1]+(u*st+v*ct)*sp;
+        if(px<-300||px>300||py<-300||py>300)continue;
+        if(near(px,py)==g)h+=circ(px,py,2.2,"f")}}
+    return h}},
+  {name:"branching tree",rot:0,gen:function(){
+    var L=[],tips="",i;for(i=0;i<10;i++)L.push("");
+    function br(x,y,a,l,d){
+      var x2=x+l*Math.cos(a),y2=y+l*Math.sin(a);
+      L[d]+="M"+q(x)+" "+q(y)+"L"+q(x2)+" "+q(y2);
+      if(d>=9){tips+=circ(x2,y2,2.4,"fo");return}
+      if(d>4&&R()<.12){br(x2,y2,a+rn(-.3,.3),l*.85,d+1);return}
+      br(x2,y2,a-rn(.2,.55),l*rn(.7,.82),d+1);br(x2,y2,a+rn(.2,.55),l*rn(.7,.82),d+1)}
+    br(0,210,-PI/2+rn(-.12,.12),78,0);
+    var h="";for(i=0;i<10;i++)h+='<path stroke-width="'+q(Math.max(1,6.5-i*.7))+'" d="'+L[i]+'"/>';
+    return h+tips}},
+  {name:"zebra stripes",rot:0,gen:function(){
+    var ph=R()*6.28,p2=R()*6.28,k=rn(.008,.014),ang=rn(-40,40),w=rn(6.5,9.5),g=rn(28,34),d="";
+    for(var s=-12;s<=12;s++){var y0=s*g,x=-340;
+      while(x<340){var xe=Math.min(x+rn(120,320),340),seg="";
+        for(var xx=x;xx<=xe;xx+=10){var y=y0+28*Math.sin(xx*k+y0*.02+ph)+14*Math.sin(xx*k*2.3+y0*.05+p2);seg+=(xx==x?"M":"L")+q(xx)+" "+q(y)}
+        d+=seg;x=xe+rn(14,40)}}
+    return '<g transform="rotate('+q(ang)+')"><path stroke-width="'+q(w)+'" d="'+d+'"/></g>'}},
+  {name:"flower of life",rot:1,gen:function(){
+    var r=rn(34,46),n=3+pick(3),h="";
+    for(var j=-n;j<=n;j++)for(var i=-n;i<=n;i++){
+      var x=(i+j/2)*r,y=j*r*S3/2,dd=Math.sqrt(x*x+y*y);
+      if(dd<=n*r+.01)h+=circ(x,y,r,dd<=r+.01?"o":"")}
+    return h+circ(0,0,(n+1)*r)+circ(0,0,(n+1)*r+7)}},
+  {name:"Penrose tiling",rot:1,gen:function(){
+    var T=[],i;
+    for(i=0;i<10;i++){
+      var B=[Math.cos((2*i-1)*PI/10),Math.sin((2*i-1)*PI/10)],C=[Math.cos((2*i+1)*PI/10),Math.sin((2*i+1)*PI/10)];
+      if(i%2==0){var t=B;B=C;C=t}
+      T.push([0,[0,0],B,C])}
+    function lp(A,B,t){return [A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t]}
+    for(var s=0;s<6;s++){var N=[];
+      T.forEach(function(t){var c=t[0],A=t[1],B=t[2],C=t[3];
+        if(c==0){var P1=lp(A,B,1/PHI);N.push([0,C,P1,B],[1,P1,C,A])}
+        else{var Q=lp(B,A,1/PHI),Rr=lp(B,C,1/PHI);N.push([1,Rr,C,A],[1,Q,Rr,B],[0,Rr,Q,A])}});
+      T=N}
+    var e="",f0="",f1="",k=325;
+    function pt(p){return q(p[0]*k)+" "+q(p[1]*k)}
+    T.forEach(function(t){
+      var tri="M"+pt(t[1])+"L"+pt(t[2])+"L"+pt(t[3])+"Z";
+      if(t[0])f1+=tri;else f0+=tri;
+      e+="M"+pt(t[3])+"L"+pt(t[1])+"L"+pt(t[2])});
+    return '<path class="f" fill-opacity=".3" d="'+f0+'"/><path class="fo" fill-opacity=".3" d="'+f1+'"/><path stroke-width="1.2" d="'+e+'"/>'}}
+  ];
+
+  function build(){
+    var i1=pick(P.length),i2=(i1+1+pick(P.length-1))%P.length;
+    [["p1",i1],["p2",i2]].forEach(function(z){
+      var el=document.getElementById(z[0]),p=P[z[1]];
+      el.innerHTML=p.gen();
+      el.style.transform=p.rot?"rotate("+Math.round(rn(0,360))+"deg)":"";
+      el.style.animation="none";el.getBoundingClientRect();el.style.animation="";
+    });
+    document.getElementById("bgname").textContent=P[i1].name+" and "+P[i2].name;
   }
-  phyllo("p1",720,10.5);
-  phyllo("p2",520,10.5);
+  build();
+  document.getElementById("newbg").addEventListener("click",build);
+  window.__bgNames=P.map(function(p){return p.name});
 })();
 document.getElementById("replay").addEventListener("click",function(){
   document.querySelectorAll(".dot").forEach(function(d){
